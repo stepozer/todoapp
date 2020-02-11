@@ -13,7 +13,8 @@ namespace TodoApp
             repository.AddTask(new TaskListItemDto {Title = "Some 2"});
             repository.AddTask(new TaskListItemDto {Title = "Some 3"});
             repository.AddTask(new TaskListItemDto {Title = "Some 4"});
-            
+
+            Console.WriteLine("Todo App");
             var indexPage = new IndexPageWidget(repository.All());
             indexPage.Render();
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TodoApp.Models;
 
@@ -8,8 +9,20 @@ namespace TodoApp.Widgets
         public IndexPageWidget(List<TaskListItemDto> tasks)
         {
             _children = new List<IWidget>();
-            _children.Add(new MenuItemWidget("Add task"));
+            _children.Add(new ButtonWidget("Add task"));
+            _children.Add(new ButtonWidget("Exit"));
             _children.Add(new TaskListWidget(tasks));
+
+            int currentX = Console.CursorLeft;
+            int currentY = Console.CursorTop;
+            foreach (var widget in _children)
+            {
+                widget.OffsetX = currentX;
+                currentX += widget.Width + 1;
+                
+                widget.OffsetY = currentY;
+                // currentY += widget.Height + 1;
+            }
         }
     }
 }

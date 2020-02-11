@@ -24,6 +24,7 @@
         <e p="TodoApp.csproj" t="IncludeRecursive" />
         <e p="Widgets" t="Include">
           <e p="BaseWidget.cs" t="Include" />
+          <e p="ButtonWidget.cs" t="Include" />
           <e p="IndexPageWidget.cs" t="Include" />
           <e p="IWidget.cs" t="Include" />
           <e p="MenuItemWidget.cs" t="Include" />
