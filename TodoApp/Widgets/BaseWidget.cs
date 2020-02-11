@@ -27,6 +27,30 @@ namespace TodoApp.Widgets
             }
         }
 
+        public void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent)
+        {
+            if (character.Key == ConsoleKey.Tab)
+            {
+                pageEvent.name = EventDto.SwitchFocus;
+                return;
+            }
+            if (character.Key == ConsoleKey.Escape)
+            {
+                pageEvent.name = EventDto.EventExit;
+                return;
+            }
+        
+            if (_children == null)
+            {
+                return;
+            }
+            
+            foreach (var item in _children)
+            {
+                item.FetchEvent(character, pageEvent);
+            }
+        }
+
         protected void GuiWriteSymbol(int charcode)
         {
             Console.Write((char)charcode);

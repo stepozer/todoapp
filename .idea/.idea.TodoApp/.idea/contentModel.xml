@@ -6,6 +6,7 @@
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="TodoApp" t="IncludeRecursive">
         <e p="Models" t="Include">
+          <e p="EventDto.cs" t="Include" />
           <e p="FocusStatusDto.cs" t="Include" />
           <e p="TaskListItemDto.cs" t="Include" />
         </e>

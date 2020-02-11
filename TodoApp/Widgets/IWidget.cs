@@ -1,3 +1,4 @@
+using System;
 using TodoApp.Models;
 
 namespace TodoApp.Widgets
@@ -5,6 +6,7 @@ namespace TodoApp.Widgets
     public interface IWidget
     {
         public void Render();
+        public void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent);
         public int OffsetX { get; set; }
         public int OffsetY { get; set; }
         

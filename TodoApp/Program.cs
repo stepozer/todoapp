@@ -14,6 +14,7 @@ namespace TodoApp
             repository.AddTask(new TaskListItemDto {Title = "Some 3"});
             repository.AddTask(new TaskListItemDto {Title = "Some 4"});
 
+            Console.Clear();
             Console.WriteLine("Todo App");
             var indexPage = new IndexPageWidget(repository.All());
             indexPage.InitializeFocus();
@@ -22,8 +23,10 @@ namespace TodoApp
             while (true)
             {
                 var character = Console.ReadKey();
-
-                if (character.Key == ConsoleKey.Tab)
+                var pageEvent = new EventDto();
+                indexPage.FetchEvent(character, pageEvent);    
+                
+                if (pageEvent.name == EventDto.SwitchFocus)
                 {
                     var status = new FocusStatusDto();
                     indexPage.SwitchFocus(status);
@@ -37,6 +40,10 @@ namespace TodoApp
                 }
                 
                 if (character.Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
+                if (pageEvent.name == EventDto.EventExit)
                 {
                     break;
                 }
