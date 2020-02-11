@@ -10,9 +10,9 @@ namespace TodoApp.Widgets
         public IndexPageWidget(List<TaskListItemDto> tasks)
         {
             _children = new List<IWidget>();
-            _children.Add(new ButtonWidget("Add task"));
-            _children.Add(new ButtonWidget("Exit"));
-            _children.Add(new TaskListWidget(tasks));
+            AddChild(new ButtonWidget("Add task"));
+            AddChild(new ButtonWidget("Exit"));
+            AddChild(new TaskListWidget(tasks));
             
             int currentX = Console.CursorLeft;
             int currentY = Console.CursorTop;

@@ -11,8 +11,10 @@ namespace TodoApp.Widgets
         public int OffsetY { get; set; } = 0;
         public int Width { get; set; } = 0;
         public int Height { get; set; } = 0;
-        
+        public IWidget Parent { get; set; }
+
         protected List<IWidget> _children;
+        
 
         public virtual void Render()
         {
@@ -27,7 +29,20 @@ namespace TodoApp.Widgets
             }
         }
 
-        public void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent)
+        public void FetchFocusedWidget(IWidget focusedWidget)
+        {
+            if (Focused)
+            {
+                focusedWidget = this;
+                return;
+            }
+            foreach (var item in _children)
+            {
+                item.FetchFocusedWidget(focusedWidget);
+            }      
+        }
+
+        public virtual void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent, IWidget focusedWidget)
         {
             if (character.Key == ConsoleKey.Tab)
             {
@@ -39,15 +54,13 @@ namespace TodoApp.Widgets
                 pageEvent.name = EventDto.EventExit;
                 return;
             }
-        
-            if (_children == null)
+            if (pageEvent.name != null)
             {
                 return;
             }
-            
-            foreach (var item in _children)
+            if (Parent != null)
             {
-                item.FetchEvent(character, pageEvent);
+                Parent.FetchEvent(character, pageEvent, focusedWidget);
             }
         }
 
@@ -70,6 +83,12 @@ namespace TodoApp.Widgets
         protected void GuiStartWidgetLine()
         {
             Console.CursorLeft = OffsetX;
+        }
+
+        protected void AddChild(IWidget widget)
+        {
+            _children.Add(widget);
+            widget.Parent = this;
         }
 
         public virtual bool CanBeFocused()

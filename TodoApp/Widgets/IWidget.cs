@@ -6,7 +6,8 @@ namespace TodoApp.Widgets
     public interface IWidget
     {
         public void Render();
-        public void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent);
+        public void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent, IWidget focusedWidget);
+        public void FetchFocusedWidget(IWidget focusedWidget);
         public int OffsetX { get; set; }
         public int OffsetY { get; set; }
         
@@ -20,5 +21,7 @@ namespace TodoApp.Widgets
         public void InitializeFocus();
         
         public void SwitchFocus(FocusStatusDto status);
+        
+        public IWidget Parent { get; set; }
     }
 }

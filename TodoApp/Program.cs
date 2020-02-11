@@ -24,7 +24,9 @@ namespace TodoApp
             {
                 var character = Console.ReadKey();
                 var pageEvent = new EventDto();
-                indexPage.FetchEvent(character, pageEvent);    
+                IWidget focusedWidget = indexPage;
+                // indexPage.FetchFocusedWidget(focusedWidget);
+                focusedWidget.FetchEvent(character, pageEvent, indexPage);    
                 
                 if (pageEvent.name == EventDto.SwitchFocus)
                 {
@@ -37,11 +39,6 @@ namespace TodoApp
                     }
                     indexPage.Render();
                     continue;
-                }
-                
-                if (character.Key == ConsoleKey.Enter)
-                {
-                    break;
                 }
                 if (pageEvent.name == EventDto.EventExit)
                 {

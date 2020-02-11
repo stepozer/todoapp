@@ -1,4 +1,5 @@
 using System;
+using TodoApp.Models;
 using TodoApp.Widgets.Lines;
 
 namespace TodoApp.Widgets
@@ -58,6 +59,14 @@ namespace TodoApp.Widgets
         public override bool CanBeFocused()
         {
             return true;
+        }
+
+        public override void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent, IWidget focusedWidget)
+        {
+            if (character.Key == ConsoleKey.Enter)
+            {
+                pageEvent.name = EventDto.EventExit;
+            }
         }
     }
 }
