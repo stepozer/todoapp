@@ -1,4 +1,5 @@
 using System;
+using TodoApp.Widgets.Lines;
 
 namespace TodoApp.Widgets
 {
@@ -17,45 +18,46 @@ namespace TodoApp.Widgets
 
         public override void Render()
         {
-            int topleft = '┌';
-            int hline = '─';
-            int topright = '┐';
-            int vline = '│';
-            int bottomleft = '└';
-            int bottomright = '┘';
-
-            Console.CursorTop = OffsetY;
-            Console.CursorLeft = OffsetX;
-
-            Write(topleft);
-            for (int i = 0; i < 10; i++)
+            ILineWidget lineStyle;
+            if (Focused)
             {
-                Write(hline);
+                lineStyle = new BoldLineWidget();
             }
-            Write(topright);
-            Write('\n');
-            
-            Write(vline);
-            Console.Write(_text.PadRight(10));
-            Write(vline);
-            Write('\n');
-            
-            Write(bottomleft);
-            for (int i = 0; i < 10; i++)
+            else
             {
-                Write(hline);
+                lineStyle = new NormalLineWidget();    
             }
-            Write(bottomright);
-            Write('\n');
+            
+            GuiStartWidget();
+
+            GuiStartWidgetLine();
+            GuiWriteSymbol(lineStyle.TopLeft());
+            for (int i = 0; i < Width; i++)
+            {
+                GuiWriteSymbol(lineStyle.Horizontal());
+            }
+            GuiWriteSymbol(lineStyle.TopRight());
+            GuiWriteSymbol('\n');
+            
+            GuiStartWidgetLine();
+            GuiWriteSymbol(lineStyle.Vertical());
+            GuiWriteString(_text.PadRight(Width));
+            GuiWriteSymbol(lineStyle.Vertical());
+            GuiWriteSymbol('\n');
+            
+            GuiStartWidgetLine();
+            GuiWriteSymbol(lineStyle.BottomLeft());
+            for (int i = 0; i < Width; i++)
+            {
+                GuiWriteSymbol(lineStyle.Horizontal());
+            }
+            GuiWriteSymbol(lineStyle.BottomRight());
+            GuiWriteSymbol('\n');
         }
         
-        private void Write(int charcode)
+        public override bool CanBeFocused()
         {
-            Console.Write((char)charcode);
-        }
-        private void WriteLine(int charcode)
-        {
-            Console.WriteLine((char)charcode);
+            return true;
         }
     }
 }

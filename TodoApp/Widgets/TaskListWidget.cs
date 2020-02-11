@@ -19,6 +19,15 @@ namespace TodoApp.Widgets
             {
                 _children.Add(new TaskListItemWidget(task));
             }
+            
+            int currentX = Console.CursorLeft;
+            int currentY = 4;
+            foreach (var widget in _children)
+            {
+                widget.OffsetX = currentX;
+                widget.OffsetY = currentY;
+                currentY += 1;
+            }
         }
     }
 }
