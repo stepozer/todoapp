@@ -1,4 +1,5 @@
 ﻿using System;
+using TodoApp.Controllers;
 using TodoApp.Models;
 using TodoApp.Models.Events;
 using TodoApp.Widgets;
@@ -10,17 +11,14 @@ namespace TodoApp
         static void Main(string[] args)
         {
             var repository = new TasksRepository();
-            repository.AddTask(new TaskListItemDto {Title = "Some 1"});
-            repository.AddTask(new TaskListItemDto {Title = "Some 2", Completed = true});
-            repository.AddTask(new TaskListItemDto {Title = "Some 3"});
-            repository.AddTask(new TaskListItemDto {Title = "Some 4", Completed = true});
+            repository.AddTask(new TaskListItemDto {Title = "Buy milk"});
+            repository.AddTask(new TaskListItemDto {Title = "Catch butterfly", Completed = true});
+            repository.AddTask(new TaskListItemDto {Title = "See waterfall"});
+            repository.AddTask(new TaskListItemDto {Title = "Watch TV", Completed = true});
 
-            Console.Clear();
-            Console.WriteLine("Todo App");
             var indexPage = new IndexPageWidget(repository);
-            indexPage.InitializeFocus();
-            indexPage.Render();
-
+            var controller = new TasksController(indexPage, repository);
+            
             while (true)
             {
                 var character = Console.ReadKey();
@@ -31,40 +29,19 @@ namespace TodoApp
                 }
                 var pageEvent = focusedWidget.FetchEvent(character, indexPage);    
                 
-                if (pageEvent is SwitchFocusDto)
+                switch (pageEvent)
                 {
-                    var status = new FocusStatusDto();
-                    indexPage.SwitchFocus(status);
-                    if (!status.Set)
-                    {
-                        status.Found = true;
-                        indexPage.SwitchFocus(status);
-                    }
-                    indexPage.Render();
-                    continue;
-                }
-                if (pageEvent is ExitProgramDto)
-                {
-                    break;
-                }
-
-                if (pageEvent is TaskToggleDto)
-                {
-                    repository.ToggleTask(((TaskToggleDto) pageEvent).Id);
-                    indexPage.Render();
-                }
-
-                if (pageEvent is TaskDeleteDto)
-                {
-                    Console.Clear();
-                    repository.RemoveTask(((TaskDeleteDto) pageEvent).Id);
-                    indexPage.Render();
-                    
-                    if (indexPage.FetchFocusedWidget() == null)
-                    {
-                        indexPage.SwitchFocus(new FocusStatusDto { Found = true, Set = false } );
-                        indexPage.Render();
-                    }
+                    case TaskDeleteDto dto:
+                        controller.ActionDeleteTask(dto.Id);
+                        break;
+                    case SwitchFocusDto _:
+                        controller.ActionSwitchFocus();
+                        break;
+                    case TaskToggleDto dto:
+                        controller.ActionToggleTask(dto.Id);
+                        break;
+                    case ExitProgramDto dto:
+                        return;
                 }
             }
         }

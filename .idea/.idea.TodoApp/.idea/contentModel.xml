@@ -7,6 +7,9 @@
       <e p="packages" t="ExcludeRecursive" />
       <e p="TodoApp" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="TasksController.cs" t="Include" />
+        </e>
         <e p="Models" t="Include">
           <e p="Events" t="Include">
             <e p="BaseEventDto.cs" t="Include" />
