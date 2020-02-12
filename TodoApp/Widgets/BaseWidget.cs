@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TodoApp.Models;
+using TodoApp.Models.Events;
 
 namespace TodoApp.Widgets
 {
@@ -29,38 +30,46 @@ namespace TodoApp.Widgets
             }
         }
 
-        public void FetchFocusedWidget(IWidget focusedWidget)
+        public IWidget FetchFocusedWidget()
         {
             if (Focused)
             {
-                focusedWidget = this;
-                return;
+                return this;
             }
-            foreach (var item in _children)
+
+            if (_children != null)
             {
-                item.FetchFocusedWidget(focusedWidget);
-            }      
+                foreach (var item in _children)
+                {
+                    var result = item.FetchFocusedWidget();
+
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
         }
 
-        public virtual void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent, IWidget focusedWidget)
+        public virtual BaseEventDto FetchEvent(ConsoleKeyInfo character, IWidget focusedWidget)
         {
             if (character.Key == ConsoleKey.Tab)
             {
-                pageEvent.name = EventDto.SwitchFocus;
-                return;
+                return new SwitchFocusDto();
             }
             if (character.Key == ConsoleKey.Escape)
             {
-                pageEvent.name = EventDto.EventExit;
-                return;
-            }
-            if (pageEvent.name != null)
-            {
-                return;
+                return new ExitProgramDto();
             }
             if (Parent != null)
             {
-                Parent.FetchEvent(character, pageEvent, focusedWidget);
+                return Parent.FetchEvent(character, focusedWidget);
+            }
+            else
+            {
+                return null;
             }
         }
 

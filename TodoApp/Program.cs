@@ -1,5 +1,6 @@
 ﻿using System;
 using TodoApp.Models;
+using TodoApp.Models.Events;
 using TodoApp.Widgets;
 
 namespace TodoApp
@@ -10,25 +11,27 @@ namespace TodoApp
         {
             var repository = new TasksRepository();
             repository.AddTask(new TaskListItemDto {Title = "Some 1"});
-            repository.AddTask(new TaskListItemDto {Title = "Some 2"});
+            repository.AddTask(new TaskListItemDto {Title = "Some 2", Completed = true});
             repository.AddTask(new TaskListItemDto {Title = "Some 3"});
-            repository.AddTask(new TaskListItemDto {Title = "Some 4"});
+            repository.AddTask(new TaskListItemDto {Title = "Some 4", Completed = true});
 
             Console.Clear();
             Console.WriteLine("Todo App");
-            var indexPage = new IndexPageWidget(repository.All());
+            var indexPage = new IndexPageWidget(repository);
             indexPage.InitializeFocus();
             indexPage.Render();
 
             while (true)
             {
                 var character = Console.ReadKey();
-                var pageEvent = new EventDto();
-                IWidget focusedWidget = indexPage;
-                // indexPage.FetchFocusedWidget(focusedWidget);
-                focusedWidget.FetchEvent(character, pageEvent, indexPage);    
+                var focusedWidget = indexPage.FetchFocusedWidget();
+                if (focusedWidget == null)
+                {
+                    continue;
+                }
+                var pageEvent = focusedWidget.FetchEvent(character, indexPage);    
                 
-                if (pageEvent.name == EventDto.SwitchFocus)
+                if (pageEvent is SwitchFocusDto)
                 {
                     var status = new FocusStatusDto();
                     indexPage.SwitchFocus(status);
@@ -40,9 +43,28 @@ namespace TodoApp
                     indexPage.Render();
                     continue;
                 }
-                if (pageEvent.name == EventDto.EventExit)
+                if (pageEvent is ExitProgramDto)
                 {
                     break;
+                }
+
+                if (pageEvent is TaskToggleDto)
+                {
+                    repository.ToggleTask(((TaskToggleDto) pageEvent).Id);
+                    indexPage.Render();
+                }
+
+                if (pageEvent is TaskDeleteDto)
+                {
+                    Console.Clear();
+                    repository.RemoveTask(((TaskDeleteDto) pageEvent).Id);
+                    indexPage.Render();
+                    
+                    if (indexPage.FetchFocusedWidget() == null)
+                    {
+                        indexPage.SwitchFocus(new FocusStatusDto { Found = true, Set = false } );
+                        indexPage.Render();
+                    }
                 }
             }
         }

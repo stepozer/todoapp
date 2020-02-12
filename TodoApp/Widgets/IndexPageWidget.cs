@@ -7,12 +7,12 @@ namespace TodoApp.Widgets
 {
     public class IndexPageWidget : BaseWidget  
     {
-        public IndexPageWidget(List<TaskListItemDto> tasks)
+        public IndexPageWidget(TasksRepository repository)
         {
             _children = new List<IWidget>();
             AddChild(new ButtonWidget("Add task"));
             AddChild(new ButtonWidget("Exit"));
-            AddChild(new TaskListWidget(tasks));
+            AddChild(new TaskListWidget(repository));
             
             int currentX = Console.CursorLeft;
             int currentY = Console.CursorTop;

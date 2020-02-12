@@ -1,5 +1,6 @@
 using System;
 using TodoApp.Models;
+using TodoApp.Models.Events;
 using TodoApp.Widgets.Lines;
 
 namespace TodoApp.Widgets
@@ -61,12 +62,13 @@ namespace TodoApp.Widgets
             return true;
         }
 
-        public override void FetchEvent(ConsoleKeyInfo character, EventDto pageEvent, IWidget focusedWidget)
+        public override BaseEventDto FetchEvent(ConsoleKeyInfo character, IWidget focusedWidget)
         {
             if (character.Key == ConsoleKey.Enter)
             {
-                pageEvent.name = EventDto.EventExit;
+                return new ExitProgramDto();
             }
+            return base.FetchEvent(character, focusedWidget);
         }
     }
 }

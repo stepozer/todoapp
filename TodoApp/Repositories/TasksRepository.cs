@@ -18,16 +18,15 @@ namespace TodoApp.Models
             _tasks.Add(task);
         }
         
-        public void RemoveTask(TaskListItemDto task)
+        public void RemoveTask(string id)
         {
-            _tasks.Remove(findTaskById(task.Id));
+            _tasks.Remove(findTaskById(id));
         }
         
-        public void EditTask(TaskListItemDto task)
+        public void ToggleTask(string id)
         {
-            var currentTask = findTaskById(task.Id);
-            currentTask.Title = task.Title;
-            currentTask.CompletedAt = task.CompletedAt;
+            var task = findTaskById(id);
+            task.Completed = !task.Completed;
         }
 
         public List<TaskListItemDto> All()

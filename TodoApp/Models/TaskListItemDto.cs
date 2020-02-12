@@ -7,7 +7,7 @@ namespace TodoApp.Models
         public string Id;
         public string Title;
         public DateTime CreatedAt;
-        public DateTime CompletedAt;
+        public bool Completed;
 
         public TaskListItemDto()
         {

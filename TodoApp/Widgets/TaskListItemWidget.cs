@@ -1,5 +1,6 @@
 using System;
 using TodoApp.Models;
+using TodoApp.Models.Events;
 using TodoApp.Widgets.Lines;
 
 namespace TodoApp.Widgets
@@ -31,7 +32,14 @@ namespace TodoApp.Widgets
             GuiStartWidgetLine();
             
             GuiWriteSymbol(lineStyle.Vertical());
-            GuiWriteSymbol(' ');
+            if (_task.Completed)
+            {
+                GuiWriteSymbol('▣'); 
+            }
+            else
+            {
+                GuiWriteSymbol(' ');
+            }
             GuiWriteSymbol(lineStyle.Vertical());
             GuiWriteString(_task.Title.PadRight(Width));
             GuiWriteSymbol(lineStyle.Vertical());
@@ -42,5 +50,18 @@ namespace TodoApp.Widgets
         {
             return true;
         }        
+        
+        public override BaseEventDto FetchEvent(ConsoleKeyInfo character, IWidget focusedWidget)
+        {
+            if (character.Key == ConsoleKey.Delete || character.Key == ConsoleKey.Backspace)
+            {
+                return new TaskDeleteDto(_task.Id);
+            }
+            if (character.Key == ConsoleKey.Spacebar)
+            {
+                return new TaskToggleDto(_task.Id);
+            }
+            return base.FetchEvent(character, focusedWidget);
+        }
     }
 }
