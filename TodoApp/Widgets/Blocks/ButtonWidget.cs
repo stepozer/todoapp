@@ -1,9 +1,10 @@
 using System;
 using TodoApp.Models;
 using TodoApp.Models.Events;
+using TodoApp.Widgets;
 using TodoApp.Widgets.Lines;
 
-namespace TodoApp.Widgets
+namespace TodoApp.Blocks.Widgets
 {
     public class ButtonWidget : BaseWidget
     {

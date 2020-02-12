@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TodoApp.Blocks.Widgets;
 using TodoApp.Models;
 
 namespace TodoApp.Widgets
 {
-    public class IndexPageWidget : BaseWidget  
+    public class TasksListPageWidget : BaseWidget  
     {
-        public IndexPageWidget(TasksRepository repository)
+        public TasksListPageWidget(TasksRepository repository)
         {
             _children = new List<IWidget>();
             AddChild(new ButtonWidget("Add task"));

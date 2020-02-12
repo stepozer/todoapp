@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TodoApp.Models;
 using TodoApp.Models.Events;
+using TodoApp.Widgets;
 
-namespace TodoApp.Widgets
+namespace TodoApp.Blocks.Widgets
 {
     public class TaskListWidget : BaseWidget
     {

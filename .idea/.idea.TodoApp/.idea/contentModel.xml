@@ -35,16 +35,20 @@
         <e p="TodoApp.csproj" t="IncludeRecursive" />
         <e p="Widgets" t="Include">
           <e p="BaseWidget.cs" t="Include" />
-          <e p="ButtonWidget.cs" t="Include" />
-          <e p="IndexPageWidget.cs" t="Include" />
+          <e p="Blocks" t="Include">
+            <e p="ButtonWidget.cs" t="Include" />
+            <e p="TaskListItemWidget.cs" t="Include" />
+            <e p="TaskListWidget.cs" t="Include" />
+          </e>
           <e p="IWidget.cs" t="Include" />
           <e p="Lines" t="Include">
             <e p="BoldLineWidget.cs" t="Include" />
             <e p="ILineWidget.cs" t="Include" />
             <e p="NormalLineWidget.cs" t="Include" />
           </e>
-          <e p="TaskListItemWidget.cs" t="Include" />
-          <e p="TaskListWidget.cs" t="Include" />
+          <e p="Pages" t="Include">
+            <e p="TasksListPageWidget.cs" t="Include" />
+          </e>
         </e>
       </e>
       <e p="TodoApp.sln" t="IncludeFlat" />

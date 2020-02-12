@@ -16,7 +16,7 @@ namespace TodoApp
             repository.AddTask(new TaskListItemDto {Title = "See waterfall"});
             repository.AddTask(new TaskListItemDto {Title = "Watch TV", Completed = true});
 
-            var indexPage = new IndexPageWidget(repository);
+            var indexPage = new TasksListPageWidget(repository);
             var controller = new TasksController(indexPage, repository);
             
             while (true)
