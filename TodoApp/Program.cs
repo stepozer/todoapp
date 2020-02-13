@@ -16,18 +16,18 @@ namespace TodoApp
             repository.AddTask(new TaskListItemDto {Title = "See waterfall"});
             repository.AddTask(new TaskListItemDto {Title = "Watch TV", Completed = true});
 
-            var indexPage = new TasksListPageWidget(repository);
-            var controller = new TasksController(indexPage, repository);
+            var pageTasksList = new TasksListPageWidget(repository);
+            var controller = new TasksController(pageTasksList, repository);
             
             while (true)
             {
                 var character = Console.ReadKey();
-                var focusedWidget = indexPage.FetchFocusedWidget();
+                var focusedWidget = pageTasksList.FetchFocusedWidget();
                 if (focusedWidget == null)
                 {
                     continue;
                 }
-                var pageEvent = focusedWidget.FetchEvent(character, indexPage);    
+                var pageEvent = focusedWidget.FetchEvent(character, pageTasksList);    
                 
                 switch (pageEvent)
                 {
@@ -35,6 +35,9 @@ namespace TodoApp
                         controller.ActionDeleteTask(dto.Id);
                         break;
                     case SwitchFocusDto _:
+                        controller.ActionSwitchFocus();
+                        break;
+                    case TaskNewDto _:
                         controller.ActionSwitchFocus();
                         break;
                     case TaskToggleDto dto:
