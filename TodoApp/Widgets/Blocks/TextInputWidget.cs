@@ -1,28 +1,28 @@
 using System;
-using TodoApp.Models;
 using TodoApp.Models.Events;
 using TodoApp.Widgets;
 using TodoApp.Widgets.Lines;
 
 namespace TodoApp.Blocks.Widgets
 {
-    public class ButtonWidget : BaseWidget
+    public class TextInputWidget : BaseWidget
     {
         private string _text;
         private bool _selected;
-        private BaseEventDto _buttonEvent;
         
-        public ButtonWidget(string text, BaseEventDto buttonEvent)
+        public TextInputWidget(string text)
         {
             Width = 10;
             Height = 3;
+            OffsetY = 4;
             _text = text;
             _selected = false;
-            _buttonEvent = buttonEvent;
         }
 
         public override void Render()
         {
+            Console.CursorTop = 4;
+            Console.CursorLeft = 0;
             ILineWidget lineStyle;
             if (Focused)
             {
@@ -33,30 +33,9 @@ namespace TodoApp.Blocks.Widgets
                 lineStyle = new NormalLineWidget();    
             }
             
-            GuiStartWidget();
-
-            GuiStartWidgetLine();
-            GuiWriteSymbol(lineStyle.TopLeft());
-            for (int i = 0; i < Width; i++)
-            {
-                GuiWriteSymbol(lineStyle.Horizontal());
-            }
-            GuiWriteSymbol(lineStyle.TopRight());
-            GuiWriteSymbol('\n');
-            
-            GuiStartWidgetLine();
+            GuiWriteString(_text);
             GuiWriteSymbol(lineStyle.Vertical());
-            GuiWriteString(_text.PadRight(Width));
-            GuiWriteSymbol(lineStyle.Vertical());
-            GuiWriteSymbol('\n');
-            
-            GuiStartWidgetLine();
-            GuiWriteSymbol(lineStyle.BottomLeft());
-            for (int i = 0; i < Width; i++)
-            {
-                GuiWriteSymbol(lineStyle.Horizontal());
-            }
-            GuiWriteSymbol(lineStyle.BottomRight());
+            GuiWriteSymbol('>');
             GuiWriteSymbol('\n');
         }
         
@@ -69,7 +48,7 @@ namespace TodoApp.Blocks.Widgets
         {
             if (character.Key == ConsoleKey.Enter)
             {
-                return _buttonEvent;
+                return new TaskCreateDto();
             }
             return base.FetchEvent(character, focusedWidget);
         }

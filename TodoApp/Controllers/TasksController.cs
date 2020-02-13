@@ -13,8 +13,18 @@ namespace TodoApp.Controllers
         {
             _view = view;
             _repository = repository;
-            _view.InitializeFocus();
-            Render();
+            RenderView();
+        }
+
+        public void SetView(IWidget view)
+        {
+            _view = view;
+            RenderView();
+        }
+
+        public IWidget CurrentView()
+        {
+            return _view;
         }
 
         public void ActionSwitchFocus()
@@ -34,6 +44,11 @@ namespace TodoApp.Controllers
             _repository.ToggleTask(id);
             _view.Render();
         }
+
+        public void ActionCreateTask(string title)
+        {
+            _repository.AddTask(new TaskListItemDto { Title = title });
+        }
         
         public void ActionDeleteTask(string id)
         {
@@ -45,12 +60,18 @@ namespace TodoApp.Controllers
                 _view.SwitchFocus(new FocusStatusDto { Found = true, Set = false } );
                 Render();
             }
-        }
+        } 
 
         private void Render()
         {
             Console.Clear();
             _view.Render();
+        }
+        
+        private void RenderView()
+        {
+            _view.InitializeFocus();
+            Render();
         }
     }
 }
